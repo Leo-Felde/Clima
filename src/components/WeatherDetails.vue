@@ -16,7 +16,7 @@
           v-if="selectedDayData.temperature_2m_min"
           class="min"
         >
-          - {{ Math.trunc(selectedDayData.temperature_2m_min) }}°
+          {{ Math.trunc(selectedDayData.temperature_2m_min) }}°
         </span>
         <button @click="$emit('changeTempPreference')"> {{ tempPreference }} </button>
       </span>
@@ -34,7 +34,10 @@
     </div>
   </div>
   
-  <Sparkline :data="[0, 2, 5, 3, 7, 8]" />
+  <Sparkline
+    :data="sparkLineData"
+    :labels="sparkLineLabels"
+  />
 </template>
 
 <script>
@@ -70,6 +73,9 @@ export default {
 
   setup (props) {
     const dailyData = ref({})
+
+    const sparkLineData = ref([])
+    const sparkLineLabels = ref([])
     
     const selectedDayData = computed(() => {
       if (!dailyData.value.time) return {}
@@ -89,8 +95,21 @@ export default {
       return props.data
     }, () => {
       formatDailyData()
-      getIndexesByDate(props.data.hourly.time, props.data.daily.time[props.selectedDay])
+      getSparklineData()
     })
+
+    watch(() => {
+      return props.selectedDay
+    }, () => {
+      getSparklineData()
+    })    
+
+    const getSparklineData = () => {
+      const indexes = getIndexesByDate(props.data.hourly.time, props.data.daily.time[props.selectedDay])
+      
+      sparkLineData.value = indexes.map(index => props.data.hourly.temperature_2m[index])
+      sparkLineLabels.value = indexes.map(index => props.data.hourly.time[index].slice(11))
+    }
 
     const getIndexesByDate = (array, targetDate) => {
       const targetDateString = targetDate.split('T')[0];
@@ -103,7 +122,7 @@ export default {
         }
       });
 
-      console.log(indexes)
+      return indexes.filter((_, index) => (index + 1) % 3 === 0)
     }
 
     const formatDailyData = () => {
@@ -120,6 +139,8 @@ export default {
     return {
       selectedDayData,
       dailyData,
+      sparkLineData,
+      sparkLineLabels,
       formatWeatherCode,
       formatWindDirection
     };

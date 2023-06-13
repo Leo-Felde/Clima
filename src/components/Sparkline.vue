@@ -34,7 +34,7 @@
         :y="height + 20"
         class="sparkline--label sparkline--bottom-label"
       >
-        {{ point.label }}
+        {{ labels[index] }}
       </text>
     </g>
   </svg>
@@ -46,14 +46,19 @@ import { ref, computed } from "vue";
 export default {
   props: {
     data: {
-      type: Object,
-      default: () => {}
-    }
+      type: Array,
+      default: () => {[]}
+    },
+
+    labels: {
+      type: Array,
+      default: () => {[]}
+    },
   },
   setup(props) {
     const stroke = ref(3);
     const width = ref(420);
-    const height = ref(80); // Increased the height to 120
+    const height = ref(120); // Increased the height to 120
 
     const coordinates = computed(() => {
       const data = props.data || [];
@@ -64,7 +69,7 @@ export default {
       data.forEach((item, n) => {
         const x = (n / totalPoints) * width.value + stroke.value;
         const y =
-          height.value - (item / highestPoint) * height.value + stroke.value;
+          (height.value - (item / highestPoint) * height.value + stroke.value) + 20;
 
         points.push({ x, y });
       });
@@ -77,7 +82,7 @@ export default {
       const labels = [];
 
       coordinates.value.forEach((point, index) => {
-        const x = point.x;
+        const x = point.x + 15;
         const label = ((index * (totalPoints - 1)) / (totalPoints - 1)).toFixed(0);
         labels.push({ x, label });
       });
