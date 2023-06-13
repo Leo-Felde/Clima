@@ -1,24 +1,12 @@
-# climaleo
+# Front de previsão do tempo com vue 3
+ Não é responsivo para mobile.
 
-## Project setup
+## Instalar dependências
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compilar projeto
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
