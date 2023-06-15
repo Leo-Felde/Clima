@@ -11,10 +11,10 @@
           :class="{'max' : !selectedDayData.temperature_2m_min}"
         >
           <span v-if="!selectedDayData.temperature_2m_min">
-            {{ Math.trunc(selectedDayData.temperature_2m_max) }}°
+            {{ selectedDayData.temperature_2m_max }}°
           </span>
           <span v-else>
-            {{ (Math.trunc(selectedDayData.temperature_2m_min) + Math.trunc(selectedDayData.temperature_2m_max)) / 2 }}
+            {{ Math.trunc(selectedDayData.temperature_2m_min + selectedDayData.temperature_2m_max) / 2 }}
           </span>
         </div>
         <button @click="$emit('changeTempPreference')"> {{ tempPreference }} </button>
@@ -158,6 +158,7 @@ export default {
     .temp-details
       margin-top: auto
       margin-bottom: auto
+      margin-left: 5px
       font-size: 2rem
       display: flex
       .min
