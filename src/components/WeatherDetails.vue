@@ -165,7 +165,9 @@ export default {
         font-size: 1.5rem
         margin-top: auto
         margin-bottom: auto
+      button
         font-size: 1.2rem
+        margin-bottom: auto
   .details
     margin-top: auto
     margin-left: auto
