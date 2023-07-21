@@ -1,11 +1,9 @@
 
-import axios from 'axios';
+import createAPI from './index';
 
 const baseURL = 'https://api.open-meteo.com/v1/gfs';
 
-const api = axios.create({
-  baseURL,
-});
+const api = createAPI(baseURL)
 
 const getForecast = async (options) => {
   try {

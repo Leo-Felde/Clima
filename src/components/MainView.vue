@@ -76,7 +76,7 @@ export default {
       if (currentDate.getTime() === selectedDate.getTime()) {
         currentDateTime.value = new Date().toLocaleTimeString(undefined, { weekday: 'long', hour: 'numeric', minute: 'numeric' })
       } else {
-        currentDateTime.value = selectedDate.toLocaleString(undefined, { weekday: 'long' })
+        currentDateTime.value = `${selectedDate.toLocaleString(undefined, { weekday: 'long' })} dia ${selectedDate.getDate()}`
       }
     }
 
@@ -136,6 +136,7 @@ export default {
   padding-top: 10px
   padding-bottom: 10px
   border-radius: 5px
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5)
 
 .title
   display: flex
