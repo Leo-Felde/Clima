@@ -3,7 +3,18 @@
     <div id="view-card">
       <div class="title">
         <span class="city-name">
-          Clima para {{ cityName }}
+          Clima para 
+          <span
+            id="city-name-button"
+            @click="showDialog = true"
+          >
+            {{ cityName }}
+            <mdicon
+              name="map-marker"
+              size="18"
+            />
+          </span>
+  
         </span>
         <span class="day-and-time">
           {{ currentDateTime }}
@@ -24,6 +35,11 @@
       :selected-day="selectedDay"
       @change-selected-day="changeSelectedDay"
     />
+
+    <DialogAutocompeteCity
+      v-model="showDialog"
+      @input="handleCityChange"
+    />
   </div>
 </template>
 
@@ -33,19 +49,24 @@ import { ref, onMounted  } from 'vue'
 import Weather from '../api/weather'
 import Forecast from './Forecast.vue'
 import WeatherDetails from './WeatherDetails.vue'
+import DialogAutocompeteCity from './DialogAutocompeteCity.vue'
 
 export default {
   name: 'MainView',
 
   components: {
     Forecast,
-    WeatherDetails
+    WeatherDetails,
+    DialogAutocompeteCity
 },
 
   setup () {
     const cityName = ref('Rebouças')
+    const latitude = ref('-25.62')
+    const longitude = ref('-50.69')
     const tempCelsius = ref(true)
     const currentDateTime = ref(null)
+    const showDialog = ref(false)
 
     const allData = ref({})
     const foreCastData = ref({})
@@ -85,8 +106,8 @@ export default {
 
       try {
         const options = {
-          latitude: -25.62,
-          longitude: -50.69,
+          latitude: latitude.value,
+          longitude: longitude.value,
           current_weather: true,
           hourly: 'temperature_2m',
           daily: 'weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,windspeed_10m_max,winddirection_10m_dominant',
@@ -103,6 +124,13 @@ export default {
       }
     }
 
+    const handleCityChange = (city) => {
+      cityName.value = city.name
+      longitude.value = city.longitude
+      latitude.value = city.latitude
+      getWeatherData()
+    }
+
     return {
       cityName,
       tempCelsius,
@@ -110,8 +138,10 @@ export default {
       allData,
       foreCastData,
       selectedDay,
+      showDialog,
       changeTempPreference,
-      changeSelectedDay
+      changeSelectedDay,
+      handleCityChange
     }
   }
 }
@@ -151,4 +181,7 @@ export default {
     cursor: pointer
     font-size: 1rem
     margin-bottom: auto
+
+#city-name-button
+  cursor: pointer
 </style>
