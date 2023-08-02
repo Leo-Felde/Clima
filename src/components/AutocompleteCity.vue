@@ -39,7 +39,6 @@ export default {
           })
           responseList.value = formatedCityList
         }
-        console.log(responseList.value)
 
       } catch (err) {
         console.log('%cError while fetching city data', 'color: red')

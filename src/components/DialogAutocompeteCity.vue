@@ -29,13 +29,17 @@ export default {
     modelValue: Boolean
   },
 
-  emits: ['input'],
+  emits: ['input', 'update:modelValue'],
 
-  setup (props) {
+  setup (props, context) {
     const show = ref(props.modelValue)
 
     watch(() => props.modelValue, (newValue) => {
       show.value = newValue
+    })
+
+    watch(() => show.value, (value) => {
+      context.emit('update:modelValue', value)
     })
 
     return {

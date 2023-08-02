@@ -66,7 +66,12 @@ export default {
     
     watch(() => props.modelValue, (newValue) => {
       showDialog.value = newValue
-      if (newValue) {
+    })
+
+    watch(() => showDialog.value, (value) => {
+      context.emit('update:modelValue', value)
+
+      if (value) {
         dialogElement.value.showModal()
       } else {
         dialogElement.value.close()
@@ -74,7 +79,7 @@ export default {
     })
 
     const closeDialog = () => {
-      context.emit('update:modelValue', false);
+      showDialog.value = false
     }
 
     return {
